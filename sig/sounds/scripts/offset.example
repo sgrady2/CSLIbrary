@@ -1,0 +1,39 @@
+#!/bin/csh
+#
+# Examples for dcblock
+#
+# parameters are: (1) offset position envelope [default: "c(0 0.5; 1 0.5)"]
+# parameters are: (1) input filename [default use whitenoise]
+# parameters are: (1) output filename
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/whitenoise $SOUNDDIR/temp.au >/dev/null <<EOT
+100000
+0.3
+1
+EOT
+
+
+echo Creating $SOUNDDIR/offset1.au
+
+rm -f $SOUNDDIR/offset1.au
+$BINDIR/offset "(0 0; 1 0.5; 2 0)" $SOUNDDIR/temp.au \
+   $SOUNDDIR/offset1.au >/dev/null 
+
+# now you can use dcblock to remove the DC component
+
+rm -f $SOUNDDIR/temp.au

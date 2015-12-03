@@ -1,0 +1,45 @@
+#!/bin/csh
+#
+# Examples for whitenoise
+#
+# parameters are: (1) output filename
+# Program input   (a) time of noise in samples
+#                 (b) amplitude of noise  [0..1]
+#                 (c) random sample update rate (1=every sample, 2=duples)
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+echo Creating $SOUNDDIR/whitenoise.au
+
+# create 1 second of noise with amplitude 0.2:
+rm -f $SOUNDDIR/whitenoise.au
+$BINDIR/whitenoise $SOUNDDIR/whitenoise.au >/dev/null <<EOT
+44100
+0.2
+1
+EOT
+
+
+echo Creating $SOUNDDIR/noise10.au
+
+# create 2 second of noise with amplitude 0.2:
+rm -f $SOUNDDIR/noise10.au
+$BINDIR/whitenoise $SOUNDDIR/noise10.au >/dev/null <<EOT
+44100
+0.2
+10
+EOT
+
+

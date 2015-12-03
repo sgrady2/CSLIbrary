@@ -1,0 +1,52 @@
+#!/bin/csh
+#
+# Examples for resonator
+#
+# parameters are: (1) resonance frequency envelope  (in Hertz)
+#                 (2) bandwidth envelope (in Hertz)
+#                 (3) input soundfile (optional)
+#                 (4) output soundfile
+#                 (a) amplitude of input noise (if no input soundfile)
+#                 (b) time of noise in seconds (if no input soundfile)
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+echo Creating $SOUNDDIR/resonator1.au -- constant banwidth
+
+# Example 1: Constant bandwidth, sweeping frequency linearly
+rm -f $SOUNDDIR/resonator1.au
+$BINDIR/resonator -d 5 -f "(0 100; 1 5000)" \
+           -b "(0 100; 1 100)" \
+           $SOUNDDIR/resonator1.au >/dev/null
+
+echo Creating $SOUNDDIR/resonator2.au -- constant frequency
+
+# Example 2: Constant frequency, widening and then narrowing bandwith
+rm -f $SOUNDDIR/resonator2.au
+$BINDIR/resonator -d 7 -f "(0 800; 45 800; 55 1200; 100 1200)" \
+      -b "(0 0.01; 10 1; 50 100; 100 1000; 150 100; 190 1; 195 0.2; 200 0.01)" \
+      $SOUNDDIR/resonator2.au >/dev/null
+
+echo Creating $SOUNDDIR/resonator3.au 
+
+# Example 3: Changing both bandwidth and center frequency simultaneously
+rm -f $SOUNDDIR/resonator3.au
+$BINDIR/resonator -d 10 -f "(0, 1000;1, 900; 2, 100; 3 100)" \
+           -b "(0, 0.01; 1, 100; 2, 10; 4, 0.1; 5 1000; 6 100; 7 0.01)" \
+           $SOUNDDIR/resonator3.au >/dev/null 
+
+
+
+

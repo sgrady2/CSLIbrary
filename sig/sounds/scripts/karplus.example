@@ -1,0 +1,53 @@
+#!/bin/csh
+#
+# Examples for karplus
+#
+# parameters are: (1) output soundfile name
+# program input:  (a) sample length of delayline
+#                 (b) time of output soundfile in seconds
+#                 (c) amplitude of input noise
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+#####
+#
+# Example 1: High pitch
+#
+
+echo Creating $SOUNDDIR/karplus1.au
+
+rm -f $SOUNDDIR/karplus1.au
+$BINDIR/karplus $SOUNDDIR/karplus1.au >/dev/null <<EOT
+100
+4
+0.1
+EOT
+
+
+#####
+#
+# Example 1: Low pitch
+#
+
+echo Creating $SOUNDDIR/karplus2.au
+
+rm -f $SOUNDDIR/karplus2.au
+$BINDIR/karplus $SOUNDDIR/karplus2.au >/dev/null <<EOT
+1700
+7
+0.2
+EOT
+
+

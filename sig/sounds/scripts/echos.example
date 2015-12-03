@@ -1,0 +1,56 @@
+#!/bin/csh
+#
+# Examples for echos
+#
+# parameters are: (1) input soundfile (mono, or left channel)
+#                 (2) output filename
+# Program input   (a) start time of echos in seconds
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+# Example 1: Just under the echo limit:
+
+if ( -r $SOUNDDIR/base/Tink.au ) then
+   echo Creating $SOUNDDIR/echo10ms.au
+
+   rm -f $SOUNDDIR/echo10ms.au
+   $BINDIR/echos $SOUNDDIR/base/Tink.au $SOUNDDIR/echo10ms.au >/dev/null << EOT
+   0.01
+EOT
+endif
+
+
+# Example 2: Just above the echo limit:
+if ( -r $SOUNDDIR/base/Tink.au ) then
+   echo Creating $SOUNDDIR/echo30ms.au
+
+   rm -f $SOUNDDIR/echo30ms.au
+   $BINDIR/echos $SOUNDDIR/base/Tink.au $SOUNDDIR/echo30ms.au >/dev/null << EOT
+   0.03
+EOT
+endif
+
+
+# Example 3: Well above the echo limit
+if ( -r $SOUNDDIR/base/Tink.au ) then
+   echo Creating $SOUNDDIR/echo50ms.au
+
+   rm -f $SOUNDDIR/echo50ms.au
+   $BINDIR/echos $SOUNDDIR/base/Tink.au $SOUNDDIR/echo50ms.au >/dev/null << EOT
+   0.05
+EOT
+endif
+
+

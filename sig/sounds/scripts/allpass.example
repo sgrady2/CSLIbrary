@@ -1,0 +1,48 @@
+#!/bin/csh
+#
+# Examples for allpass
+#
+# parameters are: (1) input soundfile (use whitenoise if no input)
+#                 (2) output soundfile name
+# Program input   (a) amplitude of input noise (if no input soundfile)
+#                 (b) duration of noise in seconds (if no input soundfile)
+#                 (c) fundamental frequency of allpass filter
+#                 (d) scale factor for feedback [0..1]
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+echo Creating $SOUNDDIR/allpass1.au
+
+rm -f $SOUNDDIR/allpass1.au
+$BINDIR/allpass $SOUNDDIR/allpass1.au >/dev/null <<EOT
+0.01 
+1   
+440 
+0.8 
+EOT
+
+
+echo Creating $SOUNDDIR/allpass2.au
+
+rm -f $SOUNDDIR/allpass2.au
+$BINDIR/allpass $SOUNDDIR/allpass2.au >/dev/null <<EOT
+0.1
+4  
+2000 
+0.4  
+EOT
+
+
+

@@ -1,0 +1,41 @@
+#!/bin/csh
+#
+# Examples for flanger
+#
+# parameters are: (1) input soundfile
+#                 (2) output soundfile name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+# first create 5 seconds of whitenoise:
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/whitenoise $SOUNDDIR/temp.au >/dev/null <<EOT
+220500
+0.4
+1
+EOT
+
+
+# now apply this noise to flanger:
+
+echo Creating $SOUNDDIR/flanger1-1.au
+
+rm -f $SOUNDDIR/flanger1-1.au
+$BINDIR/flanger $SOUNDDIR/temp.au $SOUNDDIR/flanger1-1.au >/dev/null
+
+
+rm -f $SOUNDDIR/temp.au
+

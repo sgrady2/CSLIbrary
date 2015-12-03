@@ -1,0 +1,54 @@
+#!/bin/csh
+#
+# Examples for ring
+#
+# parameters are: (1) frequency (Hz) envelope of sinewave
+#                 (2) amplitude envelope (optional, default is: "(0 1; 1 1)")
+#                 (2) input soundfile name
+#                 (3) output soundfile name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+#####
+#
+# Example 1: 
+#
+
+
+if ( -r $SOUNDDIR/base/paperjam-French.au ) then
+   echo Creating $SOUNDDIR/ring1.au
+
+   rm -f $SOUNDDIR/ring1.au
+   $BINDIR/ring "(0 400; 1 800)" "(0 1; 1 1)" $SOUNDDIR/base/paperjam-French.au \
+      $SOUNDDIR/ring1.au >/dev/null
+endif
+
+
+#####
+#
+# Example 2: 
+#
+
+
+if ( -r $SOUNDDIR/paperjam-French.au ) then
+   echo Creating $SOUNDDIR/ring2.au
+
+   rm -f $SOUNDDIR/ring2.au
+   $BINDIR/ring "(0 220; 1 220)" "(0 0; 3 0; 10 1)" \
+      $SOUNDDIR/paperjam-French.au  $SOUNDDIR/ring2.au >/dev/null
+endif
+
+
+

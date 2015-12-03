@@ -1,0 +1,48 @@
+#!/bin/csh
+#
+# Examples for pan2
+#
+# parameters are: (1) x position location (meters)
+#                 (2) y potition location (meters)
+#                 (3) input mono soundfile
+#                 (4) output soundfile name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+if ( -r $SOUNDDIR/base/Rooster.au ) then
+   echo Creating $SOUNDDIR/movingRooster.au
+
+   rm -f $SOUNDDIR/movingRooster.au
+   $BINDIR/pan2 "(0 -2; 1 2)" "(0 1; 1 1)" $SOUNDDIR/base/Rooster.au \
+      $SOUNDDIR/movingRooster.au  >/dev/null
+endif
+
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/osc -f "(0 800; 1 800)" -a "(0 0; 10000 0.3; s; 20000 0)" \
+    $SOUNDDIR/temp.au >/dev/null <<EOT
+4
+EOT
+
+
+echo Creating $SOUNDDIR/movingSine.au
+
+rm -f $SOUNDDIR/movingSine.au
+$BINDIR/pan2 "(0 -2; 1 2)" "(0 1; 1 1)" $SOUNDDIR/temp.au \
+   $SOUNDDIR/movingSine.au >/dev/null
+
+
+rm -f $SOUNDDIR/temp.au
+

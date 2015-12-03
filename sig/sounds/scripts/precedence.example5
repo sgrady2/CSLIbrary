@@ -1,0 +1,208 @@
+#!/bin/csh
+#
+# Example for precedence: 
+#
+# parameters are: (1) input sound (optional)
+#                 (2) output sound 
+# Program input   (a) duration of output sound (if no input soundfile)
+#                 (b) sample delay between channels
+#
+# Description: Similar signal in each ear with lots of overlap
+#    This makes for very strong precedence.
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+rm -f $SOUNDDIR/click7.au
+$BINDIR/whitenoise $SOUNDDIR/click7.au >/dev/null <<EOT
+2500
+0.2
+1
+EOT
+
+
+# Example 1: 
+rm -f $SOUNDDIR/out01.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out01.au >/dev/null <<EOT
+1
+EOT
+
+rm -f $SOUNDDIR/out02.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out02.au >/dev/null <<EOT
+2
+EOT
+
+rm -f $SOUNDDIR/out03.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out03.au >/dev/null <<EOT
+3
+EOT
+
+rm -f $SOUNDDIR/out04.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out04.au >/dev/null <<EOT
+4
+EOT
+
+rm -f $SOUNDDIR/out05.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out05.au >/dev/null <<EOT
+5
+EOT
+
+rm -f $SOUNDDIR/out06.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out06.au >/dev/null <<EOT
+6
+EOT
+
+rm -f $SOUNDDIR/out07.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out07.au >/dev/null <<EOT
+7
+EOT
+
+rm -f $SOUNDDIR/out08.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out08.au >/dev/null <<EOT
+8
+EOT
+
+rm -f $SOUNDDIR/out09.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out09.au >/dev/null <<EOT
+9
+EOT
+
+rm -f $SOUNDDIR/out10.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out10.au >/dev/null <<EOT
+10
+EOT
+
+rm -f $SOUNDDIR/out11.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out11.au >/dev/null <<EOT
+11
+EOT
+
+rm -f $SOUNDDIR/out12.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out12.au >/dev/null <<EOT
+12
+EOT
+
+rm -f $SOUNDDIR/out13.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out13.au >/dev/null <<EOT
+13
+EOT
+
+rm -f $SOUNDDIR/out14.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out14.au >/dev/null <<EOT
+14
+EOT
+
+rm -f $SOUNDDIR/out15.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out15.au >/dev/null <<EOT
+15
+EOT
+
+rm -f $SOUNDDIR/out16.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out16.au >/dev/null <<EOT
+16
+EOT
+
+rm -f $SOUNDDIR/out17.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out17.au >/dev/null <<EOT
+17
+EOT
+
+rm -f $SOUNDDIR/out18.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out18.au >/dev/null <<EOT
+18
+EOT
+
+rm -f $SOUNDDIR/out19.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out19.au >/dev/null <<EOT
+19
+EOT
+
+rm -f $SOUNDDIR/out20.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out20.au >/dev/null <<EOT
+20
+EOT
+
+rm -f $SOUNDDIR/out21.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out21.au >/dev/null <<EOT
+21
+EOT
+
+rm -f $SOUNDDIR/out22.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out22.au >/dev/null <<EOT
+22
+EOT
+
+rm -f $SOUNDDIR/out23.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out23.au >/dev/null <<EOT
+23
+EOT
+
+rm -f $SOUNDDIR/out24.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out24.au >/dev/null <<EOT
+24
+EOT
+
+rm -f $SOUNDDIR/out25.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out25.au >/dev/null <<EOT
+25
+EOT
+
+rm -f $SOUNDDIR/out26.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out26.au >/dev/null <<EOT
+26
+EOT
+
+rm -f $SOUNDDIR/out27.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out27.au >/dev/null <<EOT
+27
+EOT
+
+rm -f $SOUNDDIR/out28.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out28.au >/dev/null <<EOT
+28
+EOT
+
+rm -f $SOUNDDIR/out29.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out29.au >/dev/null <<EOT
+29
+EOT
+
+rm -f $SOUNDDIR/out30.au
+$BINDIR/precedence $SOUNDDIR/click7.au $SOUNDDIR/click7.au $SOUNDDIR/out30.au >/dev/null <<EOT
+30
+EOT
+
+echo Creating $SOUNDDIR/precedence5.au
+
+rm -f $SOUNDDIR/precedence5.au
+$BINDIR/concatenate \
+    $SOUNDDIR/out01.au $SOUNDDIR/out02.au $SOUNDDIR/out03.au \
+    $SOUNDDIR/out04.au $SOUNDDIR/out05.au $SOUNDDIR/out06.au \
+    $SOUNDDIR/out07.au $SOUNDDIR/out08.au $SOUNDDIR/out09.au \
+    $SOUNDDIR/out10.au $SOUNDDIR/out11.au $SOUNDDIR/out12.au \
+    $SOUNDDIR/out13.au $SOUNDDIR/out14.au $SOUNDDIR/out15.au \
+    $SOUNDDIR/out16.au $SOUNDDIR/out17.au $SOUNDDIR/out18.au \
+    $SOUNDDIR/out19.au $SOUNDDIR/out20.au $SOUNDDIR/out21.au \
+    $SOUNDDIR/out22.au $SOUNDDIR/out23.au $SOUNDDIR/out24.au \
+    $SOUNDDIR/out25.au $SOUNDDIR/out26.au $SOUNDDIR/out27.au \
+    $SOUNDDIR/out28.au $SOUNDDIR/out29.au $SOUNDDIR/out30.au \
+    $SOUNDDIR/precedence5.au >/dev/null <<EOT
+20000
+EOT
+
+
+rm -f $SOUNDDIR/click7.au $SOUNDDIR/out??.au
+
+
+

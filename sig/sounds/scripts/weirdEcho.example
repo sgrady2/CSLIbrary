@@ -1,0 +1,53 @@
+#!/bin/csh
+#
+# Examples for weirdEcho
+#
+# parameters are: (1) optional input soundfile
+#                 (2) output soundfile name
+# Program input   (a) time of noise in seconds (if no input soundfile)
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+#####
+#
+# Example 1: 
+#
+
+if ( -r $SOUNDDIR/base/Tink.au ) then
+   echo Creating $SOUNDDIR/weirdEcho1.au
+
+   rm -f $SOUNDDIR/weirdEcho1.au
+   $BINDIR/weirdEcho $SOUNDDIR/base/Tink.au $SOUNDDIR/weirdEcho1.au >/dev/null
+endif
+
+#####
+#
+# Example 2: 
+#
+
+if ( -r $SOUNDDIR/base/paperjam-French.au ) then
+   echo Creating $SOUNDDIR/weirdEcho2.au
+
+   rm -f $SOUNDDIR/temp.au
+   $BINDIR/envelope "(0 0; 1000 0.6; s; 2000 0.0)" \
+      $SOUNDDIR/base/paperjam-French.au $SOUNDDIR/temp.au >/dev/null
+
+   rm -f $SOUNDDIR/weirdEcho2.au
+   $BINDIR/weirdEcho $SOUNDDIR/temp.au $SOUNDDIR/weirdEcho2.au >/dev/null
+endif 
+
+
+rm -f $SOUNDDIR/temp.au
+

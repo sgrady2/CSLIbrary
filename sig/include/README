@@ -1,0 +1,16 @@
+This directory contains the header files for sig.  The header files
+are divided into various subdirectories:
+
+Self-contained libraries:
+   sig        -- contains the union of all the following sub-libraries
+   improv     -- library for interactive MIDI programs
+   museinfo   -- library for musical information conversion/analysis
+
+Sublibraries -- sets of code which are not independent of each other
+(except perhaps sigBase):
+   sigBase    -- basic classes that are useful to other sublibraries
+   sigControl -- classes dealing with interactive MIDI performance
+   sigInfo    -- classes dealing with musical information
+   sigNet     -- classes for simulating neural networks
+   sigSignal  -- DSP generation/filtering classes for sound signals
+

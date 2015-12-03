@@ -1,0 +1,56 @@
+#!/bin/csh
+#
+# Examples for onepole
+#
+# parameters are: (1) pole location envelope 
+#                 (2) input soundfile (use whitenoise if no input)
+#                 (3) output soundfile name
+# Program input   (a) amplitude of input noise (if no input soundfile)
+#                 (b) time of noise in seconds (if no input soundfile)
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+echo Creating $SOUNDDIR/onepole1.au
+
+rm -f $SOUNDDIR/onepole1.au
+$BINDIR/onepole "(0, -0.999; 100, -0.999)" $SOUNDDIR/onepole1.au \
+   >/dev/null <<EOT
+0.01
+1
+EOT
+
+
+echo Creating $SOUNDDIR/onepole2.au
+
+rm -f $SOUNDDIR/onepole2.au
+$BINDIR/onepole "(0, 0.999; 100, 0.999)" $SOUNDDIR/onepole2.au \
+   >/dev/null <<EOT
+0.01
+1
+EOT
+
+
+echo Creating $SOUNDDIR/onepole3.au
+
+rm -f $SOUNDDIR/onepole3.au
+$BINDIR/onepole \
+   "(0, -0.999; 50, -0.999; 150, -0.8; 180, 0;200, -0.9999; 250, -0.9)" \
+   $SOUNDDIR/onepole3.au >/dev/null <<EOT
+0.01
+5
+EOT
+
+
+

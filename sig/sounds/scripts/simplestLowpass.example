@@ -1,0 +1,40 @@
+#!/bin/csh
+#
+# Examples for simplestLowpass
+#
+# parameters are: (1) input soundfile
+#                 (2) output soundfile name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+#  make a white noise soundfile
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/whitenoise $SOUNDDIR/temp.au >/dev/null <<EOT
+50000
+0.1
+1
+EOT
+
+
+# now lowpass filter the noise
+
+echo Creating $SOUNDDIR/lowpass1.au
+
+rm -f $SOUNDDIR/lowpass1.au
+$BINDIR/simplestLowpass $SOUNDDIR/temp.au $SOUNDDIR/lowpass1.au >/dev/null
+
+rm -f $SOUNDDIR/temp.au
+

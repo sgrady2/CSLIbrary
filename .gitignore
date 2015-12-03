@@ -1,0 +1,13 @@
+*o
+moc_*
+qrc_*
+ui_*
+Makefile
+FaustWorks
+*.app
+.DS_Store
+*.dmg
+Makefile.qt4
+FaustWorks.pro.user
+FaustWorks.xcodeproj
+*.qm

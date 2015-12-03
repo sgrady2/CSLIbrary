@@ -1,0 +1,77 @@
+#!/bin/csh
+#
+# Examples for dispersion
+#
+# parameters are: (1) input soundfile (optional, otherwise whitenoise)
+#                 (2) output filename
+# program inputs: (a) amplitude of noise (if no input soundfile)
+#                 (b) duration of noise (if no input soundfile)
+#                 (c) gain of first-order allpass filters
+#                 (d) number of filters to use
+#                 (e) samples to add after input for ringing
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+echo Creating $SOUNDDIR/dispersion1.au -- this will take a while...
+
+rm -f $SOUNDDIR/dispersion1.au
+$BINDIR/dispersion $SOUNDDIR/dispersion1.au >/dev/null << EOT
+0.25
+0.1
+0.7
+800
+5000
+EOT
+
+
+echo Creating $SOUNDDIR/dispersion2.au -- this will take even longer...
+
+rm -f $SOUNDDIR/dispersion2.au
+$BINDIR/dispersion $SOUNDDIR/dispersion2.au >/dev/null << EOT
+0.25
+0.1
+0.5
+3000
+10000
+EOT
+
+
+if ( -r $SOUNDDIR/base/paperjam-French.au ) then
+   echo Creating $SOUNDDIR/base/dispersionFrench.au this will take a while...
+
+   rm -f $SOUNDDIR/dispersionFrench.au
+   $BINDIR/dispersion $SOUNDDIR/base/paperjam-French.au \
+      $SOUNDDIR/dispersionFrench.au >/dev/null << EOT
+   0.99
+   1000
+   2000
+EOT
+endif
+
+
+if ( -r $SOUNDDIR/base/paperjam-French.au ) then
+   echo Creating $SOUNDDIR/base/dispersionFrench2.au this will take even longer...
+
+   rm -f $SOUNDDIR/dispersionFrench2.au
+   $BINDIR/dispersion $SOUNDDIR/base/paperjam-French.au \
+      $SOUNDDIR/dispersionFrench2.au >/dev/null << EOT
+   0.5
+   2000
+   3000
+EOT
+endif
+
+
+

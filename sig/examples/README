@@ -1,0 +1,5 @@
+all        -- all example programs from the categories below.
+
+sig        -- example programs for audio processing.
+improv     -- example programs which use MIDI I/O only (no audio)
+museinfo   -- example programs for dealing with musical information.

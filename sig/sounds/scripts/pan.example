@@ -1,0 +1,48 @@
+#!/bin/csh
+#
+# Examples for pan
+#
+# parameters are: (1) right channel amplitude envelope 0=left, 1=right
+#                 (2) input mono soundfile
+#                 (3) output soundfile name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/whitenoise $SOUNDDIR/temp.au >/dev/null <<EOT
+100000
+0.2
+1
+EOT
+
+echo Creating $SOUNDDIR/panLinear.au
+
+rm -f $SOUNDDIR/panLinear.au
+$BINDIR/pan "(0 0.05; 1 0.95)" $SOUNDDIR/temp.au $SOUNDDIR/panLinear.au \
+   >/dev/null <<EOT
+0
+EOT
+
+
+echo Creating $SOUNDDIR/panPower.au
+
+rm -f $SOUNDDIR/panPower.au
+$BINDIR/pan "(0 0.05; 1 0.95)" $SOUNDDIR/temp.au $SOUNDDIR/panPower.au \
+   >/dev/null <<EOT
+1
+EOT
+
+
+rm -f $SOUNDDIR/temp.au

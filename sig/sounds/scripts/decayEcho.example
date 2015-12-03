@@ -1,0 +1,49 @@
+#!/bin/csh
+#
+# Examples for decayEcho
+#
+# parameters are: (1) input soundfile (mono or stereo)
+#                 (2) output soundfile (mon or stereo according to input)
+# Program input   (a) echo time in seconds
+#                 (b) decay factor for each echo
+#                 (c) number of echos to create
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/whitenoise $SOUNDDIR/temp.au >/dev/null <<EOT
+2000
+0.2
+1
+EOT
+
+
+#####
+#
+# Example 1
+#
+
+echo Creating $SOUNDDIR/echo1.au
+
+rm -f $SOUNDDIR/echo1.au
+$BINDIR/decayEcho $SOUNDDIR/temp.au $SOUNDDIR/echo1.au >/dev/null <<EOT
+0.2
+0.7
+20
+EOT
+
+rm -f $SOUNDDIR/temp.au
+

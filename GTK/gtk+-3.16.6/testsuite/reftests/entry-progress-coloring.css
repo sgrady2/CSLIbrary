@@ -1,0 +1,20 @@
+@import "reset-to-defaults.css";
+
+* {  
+  font: Monospace;
+}
+
+GtkEntry #padded {
+  padding: 10px;
+}
+
+.progressbar {
+  background-color: rgba(0,0,0,0);
+  background-image: none;
+  border-color: rgba(0,0,0,0);
+  color: red;
+}
+
+#reference {
+  color: red;
+}

@@ -1,0 +1,98 @@
+#!/bin/csh
+#
+# Examples for additive: Masking
+#
+# parameters are: (1) frequency envelope  (in Hertz)
+#                 (2) amplitude envelope [0..1]
+#                 (1a) frequency envelope #2 (in Hertz)
+#                 (2a) amplitude envelope [0..1]
+#                 etc.
+#                 (3) output soundfile
+# Program input   (a) time of sound in seconds 
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+#####
+#
+# First, create two sinewaves, one of which is masked:
+#
+
+echo Creating $SOUNDDIR/masking1.au which contains two sine tones.
+
+rm -f $SOUNDDIR/masking1.au
+$BINDIR/additive \
+    "(0 440; 1 440)" "(0 0.7; 1 0.7)" \
+    "g(0 660; 1 880)" "g(0 0.01; 1 0.001)" \
+    $SOUNDDIR/masking1.au >/dev/null <<EOT
+4
+EOT
+
+#####
+#
+# Now, create a soundfile with only the masker
+#
+
+echo Creating $SOUNDDIR/masking2.au which contains only one sine tone.
+
+rm -f $SOUNDDIR/masking2.au
+$BINDIR/additive \
+    "(0 440; 1 440)" "(0 0.7; 1 0.7)" \
+    $SOUNDDIR/masking2.au >/dev/null <<EOT
+4
+EOT
+
+#####
+#
+# masking1.au sounds identical to masking2.au to me 
+# (at the loudness level I am listening to)
+# Here is the sound of the masked tone alone.
+
+echo Creating $SOUNDDIR/maskingDif12.au which is the difference of
+echo "   previous two soundfiles (leaving only the masked tone)."
+
+rm -f $SOUNDDIR/maskingDiff12.au
+$BINDIR/subtract $SOUNDDIR/masking1.au $SOUNDDIR/masking2.au \
+    $SOUNDDIR/maskingDiff12.au >/dev/null
+
+
+#####
+#
+# Now, create a sound which is not completely masked.
+#
+
+echo Creating $SOUNDDIR/masking3.au which has two tones, one partially masked.
+
+rm -f $SOUNDDIR/masking3.au
+$BINDIR/additive \
+    "(0 440; 1 440)" "(0 0.7; 1 0.7)" \
+    "g(0 660; 1 880)" "g(0 0.01; 1 0.01)" \
+    $SOUNDDIR/masking3.au >/dev/null <<EOT
+4
+EOT
+
+
+#####
+#
+# Listen to the partially masked tone alone.
+#
+
+echo Creating $SOUNDDIR/maskingDiff23.au which contains only the partially
+echo "   masked tone."
+
+rm -f $SOUNDDIR/maskingDiff23.au
+$BINDIR/subtract $SOUNDDIR/masking3.au $SOUNDDIR/masking2.au \
+    $SOUNDDIR/maskingDiff23.au  >/dev/null
+
+

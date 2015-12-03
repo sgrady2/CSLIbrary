@@ -1,0 +1,54 @@
+#!/bin/csh
+#
+# Examples for joinMono
+#
+# parameters are: (1) Left channel mono file
+#                 (2) Right channel mono file
+#                 (3) output soundfile
+# Program input   (a) delay of right channel wrt left channel
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+# First create two mono soundfiles:
+rm -f $SOUNDDIR/temp1.au
+$BINDIR/sinewave $SOUNDDIR/temp1.au >/dev/null <<EOT
+400
+4000
+0.1
+0
+EOT
+
+
+rm -f $SOUNDDIR/temp2.au
+$BINDIR/whitenoise $SOUNDDIR/temp2.au >/dev/null <<EOT
+100000
+0.1
+1
+EOT
+
+
+# now joinMono the files into a single stereo file:
+
+echo Creating $SOUNDDIR/joined.au which is a stereo file created from 
+echo "   two monophonic files."
+
+rm -f $SOUNDDIR/joined.au
+$BINDIR/joinMono $SOUNDDIR/temp1.au $SOUNDDIR/temp2.au \
+   $SOUNDDIR/joined.au >/dev/null <<EOT
+2
+EOT
+
+rm -f $SOUNDDIR/temp1.au
+rm -f $SOUNDDIR/temp2.au

@@ -1,0 +1,52 @@
+#!/bin/csh
+#
+# Examples for concatenate 
+#
+# parameters are: (1) one or more input soundfiles
+#                 (2) output soundfile name
+# Program input   (a) number of zero samples between input sounds
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/whitenoise $SOUNDDIR/temp.au >/dev/null <<EOT
+3000
+0.1
+1
+EOT
+
+rm -f $SOUNDDIR/temp2.au
+$BINDIR/silence $SOUNDDIR/temp2.au >/dev/null <<EOT
+3000
+EOT
+
+
+#####
+#
+# Example 1
+#
+
+echo Creating $SOUNDDIR/b.au
+
+rm -f $SOUNDDIR/b.au
+$BINDIR/concatenate $SOUNDDIR/temp.au \
+   $SOUNDDIR/temp2.au $SOUNDDIR/temp.au $SOUNDDIR/temp2.au \
+   $SOUNDDIR/temp.au $SOUNDDIR/temp2.au $SOUNDDIR/temp.au \
+   $SOUNDDIR/temp2.au $SOUNDDIR/b.au >/dev/null <<EOT
+0
+EOT
+   
+rm -f $SOUNDDIR/temp.au
+rm -f $SOUNDDIR/temp2.au

@@ -1,0 +1,116 @@
+#!/bin/csh
+#
+# Examples for periods
+#
+# parameters are: (1) output filename
+# Program input   (a) frequency of sinewave in Hertz
+#                 (b) number of cycles for freqency to sound
+#                 (c) amplitude of sound [0..1]
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+echo Creating $SOUNDDIR/period1.au
+
+# Example 1: 1 period of a 500 Hz tone:
+rm -f $SOUNDDIR/period1.au
+$BINDIR/periods $SOUNDDIR/period1.au >/dev/null <<EOT
+500
+1
+0.7
+EOT
+
+
+echo Creating $SOUNDDIR/period2.au
+
+# Example 2: 2 period of a 500 Hz tone:
+rm -f $SOUNDDIR/period2.au
+$BINDIR/periods $SOUNDDIR/period2.au >/dev/null <<EOT
+500
+2
+0.7
+EOT
+
+echo Creating $SOUNDDIR/period3.au
+
+# Example 3: 3 period of a 500 Hz tone:
+rm -f $SOUNDDIR/period3.au
+$BINDIR/periods $SOUNDDIR/period3.au >/dev/null <<EOT
+500
+3
+0.7
+EOT
+
+echo Creating $SOUNDDIR/period4.au
+
+# Example 4: 4 period of a 500 Hz tone:
+rm -f $SOUNDDIR/period4.au
+$BINDIR/periods $SOUNDDIR/period4.au >/dev/null <<EOT
+500
+4
+0.7
+EOT
+
+echo Creating $SOUNDDIR/period5.au
+
+# Example 5: 5 period of a 500 Hz tone:
+rm -f $SOUNDDIR/period5.au
+$BINDIR/periods $SOUNDDIR/period5.au >/dev/null <<EOT
+500
+5
+0.7
+EOT
+
+echo Creating $SOUNDDIR/period6.au
+
+# Example 6: 6 period of a 500 Hz tone:
+rm -f $SOUNDDIR/period6.au
+$BINDIR/periods $SOUNDDIR/period6.au >/dev/null <<EOT
+500
+6
+0.7
+EOT
+
+echo Creating $SOUNDDIR/period7.au
+
+# Example 7: 7 period of a 500 Hz tone:
+rm -f $SOUNDDIR/period7.au
+$BINDIR/periods $SOUNDDIR/period7.au >/dev/null <<EOT
+500
+7
+0.7
+EOT
+
+echo Creating $SOUNDDIR/period8.au
+
+# Example 8: 8 period of a 500 Hz tone:
+rm -f $SOUNDDIR/period8.au
+$BINDIR/periods $SOUNDDIR/period8.au >/dev/null <<EOT
+500
+8
+0.7
+EOT
+
+echo Creating $SOUNDDIR/period9.au
+
+# Example 9: 9 period of a 500 Hz tone:
+rm -f $SOUNDDIR/period9.au
+$BINDIR/periods $SOUNDDIR/period9.au >/dev/null <<EOT
+500
+9
+0.7
+EOT
+
+
+
+

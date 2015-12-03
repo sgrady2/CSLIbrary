@@ -1,0 +1,36 @@
+FAUSTWORKS (© GRAME 2013)
+=========================
+
+FaustWorks is an IDE (Integrated Development Environment) for the
+Faust dsp programming language. You must have Faust installed to 
+be able to use FaustWorks. Platforms supported are Linux and OSX.
+
+1) Compile and Install Faust
+----------------------------
+- download Faust form here :
+    http://sourceforge.net/projects/faudiostream/files/latest/download?source=files
+- uncompress the sources
+- cd into the faust directory
+- make
+- sudo make install
+
+2) Install the QT4.8 SDK
+------------------------
+On Mac OSX you can download the SDK here : 
+    http://releases.qt-project.org/qt4/source/qt-mac-opensource-4.8.4.dmg
+On Linux you can use your package system.
+
+2) Compile and install FaustWorks
+---------------------------------
+- unzip the FaustWorks-0.4.zip source package
+- cd FaustWorks-0.4
+- make
+- sudo make install
+
+
+
+FaustWorks is released under the GPL licence
+(http://www.gnu.org/licenses/gpl.html).
+This version is still experimental and undocumented. 
+
+

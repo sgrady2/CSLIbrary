@@ -1,0 +1,39 @@
+#!/bin/csh
+#
+# Examples for dcblock
+#
+# parameters are: (1) pole position envelope [default: "(0 0.995; 1 0.995)"]
+# parameters are: (1) input filename [default use whitenoise]
+# parameters are: (1) output filename
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/whitenoise $SOUNDDIR/temp.au >/dev/null <<EOT
+100000
+0.5
+1
+EOT
+
+
+echo Creating $SOUNDDIR/dcblock1.au
+
+rm -f $SOUNDDIR/dcblock1.au
+$BINDIR/dcblock -p "(0 0.1; 1 0.999; 2 0.999)" $SOUNDDIR/temp.au \
+   $SOUNDDIR/dcblock1.au >/dev/null 
+
+rm -f $SOUNDDIR/temp.au
+
+

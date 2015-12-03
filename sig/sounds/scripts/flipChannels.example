@@ -1,0 +1,40 @@
+#!/bin/csh
+#
+# Examples for flipChannels
+#
+# parameters are: (1) input stereo soundfile
+#                 (2) output file name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+echo Creating $SOUNDDIR/flip-original.au 
+
+rm -f $SOUNDDIR/flip-original.au
+$BINDIR/binauralBeats "(0 440; 1 440)" "(0 1000; 1 1000)" \
+   $SOUNDDIR/flip-original.au >/dev/null <<EOT
+3
+EOT
+
+#####
+#
+# Example 1: 
+#
+
+echo Creating $SOUNDDIR/flip1.au which switches the channels of the above file.
+
+rm -f $SOUNDDIR/flip1.au
+$BINDIR/flipChannels $SOUNDDIR/flip-original.au \
+   $SOUNDDIR/flip1.au >/dev/null
+
+

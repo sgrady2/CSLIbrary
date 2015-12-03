@@ -1,0 +1,44 @@
+#!/bin/csh
+#
+# Examples for sign
+#
+# parameters are: (1) input filename [default: use whitenoise]
+#                 (2) output filename
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/sinewave $SOUNDDIR/temp.au >/dev/null <<EOT
+440
+880
+0.2
+0.0
+EOT
+
+
+rm -f $SOUNDDIR/temp2.au
+$BINDIR/sign $SOUNDDIR/temp.au $SOUNDDIR/temp2.au
+
+
+echo Creating $SOUNDDIR/square440.au
+
+rm -f $SOUNDDIR/square440.au
+$BINDIR/normalize 0.2  $SOUNDDIR/temp2.au $SOUNDDIR/square440.au \
+   >/dev/null 
+
+rm -f $SOUNDDIR/temp.au
+rm -f $SOUNDDIR/temp2.au
+
+

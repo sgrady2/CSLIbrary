@@ -1,0 +1,48 @@
+#!/bin/csh
+#
+# Examples for extract 
+#
+# parameters are: (1) channel to extract (0=left, 1=right)
+#                 (2) input soundfile name
+#                 (3) output soundfile name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+echo Creating $SOUNDDIR/extractbefore.au which is a stereo file
+
+rm -f $SOUNDDIR/extractbefore.au
+$BINDIR/binauralBeats "(0 1150; 1 150)" "(0 150; 1 252; 2 152)" \
+   $SOUNDDIR/extractbefore.au >/dev/null <<EOT
+3
+EOT
+
+
+echo Creating $SOUNDDIR/extractleft.au which is the left channel of 
+echo "   previous file"
+
+rm -f $SOUNDDIR/extractleft.au
+$BINDIR/extract 0 $SOUNDDIR/extractbefore.au \
+   $SOUNDDIR/extractleft.au >/dev/null
+
+
+echo Creating $SOUNDDIR/extractright.au which is the right channel of 
+echo "   previous file"
+
+rm -f $SOUNDDIR/extractright.au
+$BINDIR/extract 1 $SOUNDDIR/extractbefore.au \
+   $SOUNDDIR/extractright.au >/dev/null
+
+
+
+

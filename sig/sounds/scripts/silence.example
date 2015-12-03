@@ -1,0 +1,34 @@
+#!/bin/csh
+#
+# Examples for silence
+#
+# parameters are: (1) output sound file name
+# Program input   (a) number of samples in output sound
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+#####
+#
+# Example 1: one second of silence
+#
+
+echo Creating $SOUNDDIR/silence.au
+
+rm -f $SOUNDDIR/silence.au
+$BINDIR/silence $SOUNDDIR/silence.au >/dev/null <<EOT
+44100
+EOT
+
+

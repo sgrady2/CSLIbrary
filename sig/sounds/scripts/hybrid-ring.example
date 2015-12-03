@@ -1,0 +1,35 @@
+#!/bin/csh
+#
+# Examples for hybrid-ring
+#
+# parameters are: (1) frequency (Hz) envelope of sinewave
+#		  (2) modulation envelope (optional, default "(0 1; 1 1)")
+#		  (3) inputsound mixing env (optional, default "(0 0; 1 0)")
+#                 (4) input soundfile name
+#                 (5) output soundfile name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+
+if ( -r $SOUNDDIR/base/paperjam-French.au ) then
+   echo Creating $SOUNDDIR/hybrid-ring1.au
+
+   rm -f $SOUNDDIR/hybrid-ring1.au
+   $BINDIR/hybrid-ring "(0 400; 1 200)" "(0 0; 1 1)"  "(0 1; 1 0)" \
+      $SOUNDDIR/base/paperjam-French.au \
+      $SOUNDDIR/hybrid-ring1.au >/dev/null
+endif
+
+

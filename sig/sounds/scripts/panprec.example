@@ -1,0 +1,56 @@
+#!/bin/csh
+#
+# Examples for panprec
+#
+# parameters are: (1) right channel amplitude envelope 0=left, 1=right
+#                 (2) input mono soundfile
+#                 (3) output soundfile name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/whitenoise $SOUNDDIR/temp.au >/dev/null <<EOT
+100000
+0.2
+1
+EOT
+
+
+echo Creating $SOUNDDIR/panPrec1.au
+
+rm -f $SOUNDDIR/panPrec1.au
+$BINDIR/panprec "(0 0.05; 1 0.95)" $SOUNDDIR/temp.au \
+   $SOUNDDIR/panPrec1.au  >/dev/null
+
+
+
+rm -f $SOUNDDIR/temp2.au
+$BINDIR/osc -f "(0 1000; 100 1000)" -a "(0 0; 10000 0.2; s; 20000 0)" \
+   $SOUNDDIR/temp2.au >/dev/null <<EOT
+4
+EOT
+
+
+echo Creating $SOUNDDIR/panPrec2.au
+
+rm -f $SOUNDDIR/panPrec2.au
+$BINDIR/panprec "(0 0.05; 1 0.95)" $SOUNDDIR/temp2.au \
+   $SOUNDDIR/panPrec2.au  >/dev/null
+
+
+rm -f $SOUNDDIR/temp.au
+rm -f $SOUNDDIR/temp2.au
+
+

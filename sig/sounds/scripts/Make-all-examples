@@ -1,0 +1,10 @@
+#!/bin/csh
+
+foreach i (*.example*)
+   if ($i == dispersion.example) then
+      echo Skipping over $i because it takes a long time to generate
+   else
+      $i
+   endif
+end
+

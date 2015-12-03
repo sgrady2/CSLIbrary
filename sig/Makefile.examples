@@ -1,0 +1,238 @@
+## sig example programs makefile for linux on Intel computers.
+##
+## Programmer:    Craig Stuart Sapp <craig@ccrma.stanford.edu>
+## Creation Date: Sat Nov 15 20:57:39 PST 1997
+## Last Modified: Tue Mar 17 23:29:06 GMT-0800 1998
+## Last Modified: Sun Jan 10 06:03:31 PST 1999
+## Last Modified: Fri May 28 15:46:55 PDT 1999
+## Last Modified: Sun Jun 11 13:50:15 PDT 2000
+## Filename:      ...sig/make/linux/Makefile.examples
+##
+## Description: This Makefile creates example programs which use the sig
+##		library for linux using gcc 2.7.2 or higher.
+##
+## To run this makefile, type (without quotes) "make -f Makefile.examples"
+##
+## Without arguments, the makefile will compile all example programs.
+## If you give a program name as an argument, it will compile 
+## just that program. E.g.: "make -f Makefile.examples whitenoise"
+## will compile the whitenoise program and place it in the ./bin directory.
+##
+
+###########################################################################
+#                                                                         #
+#                                                                         #
+#  Operating System OSTYPEs available in the sig++ library compilation:   #
+#
+#      HPUX   = Hewlett-Packard Unix Workstations.
+#      IRIX   = SGI computers with IRIX OS.
+#      LINUX  = Linux running on intel computers
+#      NEXTI  = NeXT OS on Intel Hardware
+#      NEXTM  = NeXT OS on Motorola Hardware
+#      SUN    = Sun SPARCstations
+#      VISUAL = Windows 95/NT using Microsoft Visual C++ 5.0
+#
+# The file "sigConfiguration.h" in the include directory contains additional
+# defines which will be activated by the OS given by the OSTYPE variable
+# below.  Look at the sigConfiguration.h file for various things which need
+# to be defined specifically for each OS.
+#
+# Normally this variable is not needed for compiling programs using the
+# sig library, since it is in the library creation where the os-specific code
+# is compiled.  The OSTYPE variable is just here in case it is ever needed.
+# Only one of these defines can be defined at a time.
+#
+OSTYPE = LINUX
+
+
+# The SUBTYPE define is used for accessing various I/O features.  
+# Currently, this is only used with LINUX.  More than 1 subtype 
+# can be defined at a time.  The possible values for SUBTYPEs are:
+#   OSS  -- Open Sound System interface to soundcards.
+#   ALSA -- Advanced Linux Sound Architecture interface to soundcards.
+#
+SUBTYPE = OSS
+
+
+SRCDIR    = examples
+INCDIR    = include/sig
+OBJDIR    = obj
+LIBDIR    = lib
+TARGDIR   = bin
+
+COMPILER  = g++
+
+DEFINES   = $(addprefix -D,$(OSTYPE)) $(addprefix -D,$(SUBTYPE))
+
+
+PREFLAGS  := -Wall -g -O3 -I$(INCDIR) $(DEFINES)
+
+# Uncomment the following line for static linking (more portable executable)
+# PREFLAGS += -static
+    
+POSTFLAGS := -L$(LIBDIR) -lsig 
+
+# Added pthreads when compiling the improv example programs:
+POSTFLAGS += -L/lib -lpthread
+
+# uncomment the following lines for GUI interfaces in QT/KDE:
+# PREFLAGS  += -I/usr/lib/qt-2.1.0/include
+# POSTFLAGS += -L/usr/lib/qt-2.1.0/lib -lqt
+# PREFLAGS  += -I/home/craig/improv/gui/baton3
+
+
+#                                                                         #
+# End of user-modifiable variables.                                       #
+#                                                                         #
+###########################################################################
+
+
+
+# setting up the directory paths to search for program source code
+vpath %.cpp   $(SRCDIR)/all
+
+# generating a list of the programs to compile with "make all"
+
+##### sig example programs:
+
+PROGS11x = $(notdir $(patsubst \
+         %.cpp,%,$(wildcard $(SRCDIR)/sig/sigFile/*.cpp)))
+PROGS11 = $(addprefix sig/sigFile/,$(PROGS11x))
+
+PROGS12x = $(notdir $(patsubst \
+         %.cpp,%,$(wildcard $(SRCDIR)/sig/sigAudio/*.cpp)))
+PROGS12 = $(addprefix sig/sigAudio/,$(PROGS12x))
+
+PROGS13x = $(notdir $(patsubst \
+         %.cpp,%,$(wildcard $(SRCDIR)/sig/sigControl/*.cpp)))
+PROGS13 = $(addprefix sig/sigControl/,$(PROGS13x))
+
+##### improv example programs:
+
+PROGS21x = $(notdir $(patsubst \
+         %.cpp,%,$(wildcard $(SRCDIR)/improv/batonImprov/*.cpp)))
+PROGS21 = $(addprefix improv/batonImprov/,$(PROGS21x))
+
+PROGS22x = $(notdir $(patsubst \
+         %.cpp,%,$(wildcard $(SRCDIR)/improv/improv/*.cpp)))
+PROGS22 = $(addprefix improv/improv/,$(PROGS22x))
+
+PROGS23x = $(notdir $(patsubst \
+         %.cpp,%,$(wildcard $(SRCDIR)/improv/synthImprov/*.cpp)))
+PROGS23 = $(addprefix improv/synthImprov/,$(PROGS23x))
+
+PROGS24x = $(notdir $(patsubst \
+         %.cpp,%,$(wildcard $(SRCDIR)/improv/batonSynthImprov/*.cpp)))
+PROGS24 = $(addprefix improv/batonSynthImprov/,$(PROGS24x))
+
+##### museinfo example programs:
+
+PROGS31x = $(notdir $(patsubst \
+         %.cpp,%,$(wildcard $(SRCDIR)/museinfo/humdrum/*.cpp)))
+PROGS31 = $(addprefix museinfo/humdrum/,$(PROGS31x))
+
+PROGS32x = $(notdir $(patsubst \
+         %.cpp,%,$(wildcard $(SRCDIR)/museinfo/musedata/*.cpp)))
+PROGS32 = $(addprefix museinfo/museinfo/,$(PROGS32x))
+
+PROGS33x = $(notdir $(patsubst \
+         %.cpp,%,$(wildcard $(SRCDIR)/museinfo/score/*.cpp)))
+PROGS33 = $(addprefix museinfo/score/,$(PROGS33x))
+
+##### all example programs:
+
+PROGS := $(PROGS11) $(PROGS12) $(PROGS13) 
+PROGS += $(PROGS21) $(PROGS22) $(PROGS23) $(PROGS24)
+PROGS += $(PROGS31) $(PROGS32) $(PROGS33)
+
+PROGSSIG      := $(PROGS11) $(PROGS12) $(PROGS13) 
+PROGSSIGFILE  := $(PROGS11)
+PROGSIMPROV   := $(PROGS21) $(PROGS22) $(PROGS23) 
+PROGSMUSEINFO := $(PROGS31) $(PROGS32) $(PROGS33) 
+
+# targets which don't actually refer to files
+.PHONY : all bin makebindir line2sine collapse xcollapse symlinks sigFile
+
+
+###########################################################################
+#                                                                         #
+#                                                                         #
+
+all : makebindir $(addprefix $(TARGDIR)/,$(notdir $(PROGS))) symlinks
+	@echo Finished compiling example programs for all categories.
+
+sigFile : makebindir $(addprefix $(TARGDIR)/,$(notdir $(PROGSSIGFILE))) 
+	@echo Finished compiling example programs for sigFile.
+
+improv : makebindir $(addprefix $(TARGDIR)/,$(notdir $(PROGSIMPROV))) 
+	@echo Finished compiling example programs for improv.
+
+museinfo : makebindir $(addprefix $(TARGDIR)/,$(notdir $(PROGSMUSEINFO))) 
+	@echo Finished compiling example programs for museinfo.
+
+symlinks:
+	# make symbolic links to example programs so they can be browsed
+	# by category.
+	-rm -rf $(TARGDIR)/sig
+	-rm -rf $(TARGDIR)/improv
+	-rm -rf $(TARGDIR)/museinfo
+	-mkdir $(TARGDIR)/sig
+	-mkdir $(TARGDIR)/sig/sigFile
+	-mkdir $(TARGDIR)/sig/sigAudio
+	-mkdir $(TARGDIR)/sig/sigControl
+	-mkdir $(TARGDIR)/improv
+	-mkdir $(TARGDIR)/improv/improv
+	-mkdir $(TARGDIR)/improv/synthImprov
+	-mkdir $(TARGDIR)/improv/batonImprov
+	-mkdir $(TARGDIR)/improv/batonSynthImprov
+	-mkdir $(TARGDIR)/museinfo
+	-mkdir $(TARGDIR)/museinfo/humdrum
+	-mkdir $(TARGDIR)/museinfo/musedata
+	-mkdir $(TARGDIR)/museinfo/midi
+	-mkdir $(TARGDIR)/museinfo/score
+	@$(foreach p,$(PROGS),\
+            $(shell echo "cd $(TARGDIR)/$(dir $(p)); \
+            ln -s ../../$(notdir $(p)) .;\
+            cd ../../..; "))
+
+	
+collapse: xcollapse all
+
+xcollapse:
+	PROGS = $(notdir $(PROGS))
+
+makebindir :
+#	@echo Programs: $(sort $(notdir $(PROGS)))
+	-mkdir $(TARGDIR)
+
+
+
+# Handle example programs with special needs:
+
+$(TARGDIR)/2dpos $(TARGDIR)/position1 $(TARGDIR)/position2:
+	@echo Skipping over $@ since it can only run in Windows 95
+
+$(TARGDIR)/harmanal :
+	@echo Skipping over $@ since I need to fix the Chord enumerations
+
+$(TARGDIR)/perform:
+	@echo Skipping over $@ for now, hplay program replaces it.
+
+# defining an explicit rule for program sourcefile dependencies
+
+$(TARGDIR)/% : %.cpp
+	$(COMPILER) $(PREFLAGS) -o $@ $< $(POSTFLAGS) \
+        && strip $@
+
+% : %.cpp
+	$(COMPILER) $(PREFLAGS) -o $(TARGDIR)/$@ $< $(POSTFLAGS) \
+        && strip $(TARGDIR)/$@
+
+
+#                                                                         #
+#                                                                         #
+###########################################################################
+
+
+
+

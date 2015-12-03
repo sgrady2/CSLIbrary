@@ -1,0 +1,39 @@
+#!/bin/csh
+#
+# Examples for normalize
+#
+# parameters are: (1) amplitude to scale to (default is 1.0)
+#                 (2) input soundfile name
+#                 (3) output soundfile name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+# create quiet noise
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/whitenoise $SOUNDDIR/temp.au >/dev/null <<EOT
+100000
+0.0001
+1
+EOT
+
+echo Creating $SOUNDDIR/normalize1.au
+
+rm -f $SOUNDDIR/normalize1.au
+$BINDIR/normalize 0.5 $SOUNDDIR/temp.au \
+   $SOUNDDIR/normalize1.au  >/dev/null
+
+
+rm -f $SOUNDDIR/temp.au

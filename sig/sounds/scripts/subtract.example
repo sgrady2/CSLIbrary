@@ -1,0 +1,49 @@
+#!/bin/csh
+#
+# Examples for subtract
+#
+# parameters are: (1) output sound file name
+# Program input   (a) number of samples in output sound
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+#####
+#
+# Example 1:
+#
+
+rm -f $SOUNDDIR/temp1.au
+$BINDIR/osc -f "0 440, 25 440, 26 660, 50 660, 75 330, 90 660, 100 2000" \
+    -a "0 0, 1 0.5, 3 0" $SOUNDDIR/temp1.au >/dev/null <<EOT
+4
+EOT
+
+rm -f $SOUNDDIR/temp2.au
+$BINDIR/osc -f "g(0 440; 25 440; 26 660; 50 660; 75 330; 90 660; 100 2000)" \
+    -a "0 0, 3 0.5, 4 0" $SOUNDDIR/temp2.au >/dev/null <<EOT
+4
+EOT
+
+
+echo Creating $SOUNDDIR/subtract1.au
+
+rm -f $SOUNDDIR/subtract1.au
+$BINDIR/subtract $SOUNDDIR/temp1.au $SOUNDDIR/temp2.au \
+   $SOUNDDIR/subtract1.au >/dev/null
+
+rm -f $SOUNDDIR/temp1.au
+rm -f $SOUNDDIR/temp2.au
+
+

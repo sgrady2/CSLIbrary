@@ -1,0 +1,1 @@
+../../all/seny.cpp

@@ -1,0 +1,1 @@
+../sig/EnvelopeString.cpp

@@ -1,0 +1,57 @@
+#!/bin/csh
+#
+# Examples for mix
+#
+# parameters are: (1) first input soundfile
+#                 (2) second input soundfile
+#                 (3) output sound file name
+# program input:  (a) scaling of sound file 1
+#                 (b) scaling of sound file 2
+#                 (c) offset time in seconds of second sound file
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+# First create two soundfiles:
+
+rm -f $SOUNDDIR/temp1.au
+$BINDIR/sinewave $SOUNDDIR/temp1.au >/dev/null <<EOT
+400
+400
+0.1
+0
+EOT
+
+rm -f $SOUNDDIR/temp2.au
+$BINDIR/sinewave $SOUNDDIR/temp2.au >/dev/null <<EOT
+660
+660
+0.1
+0
+EOT
+
+
+echo Creating $SOUNDDIR/mix1.au
+
+rm -f $SOUNDDIR/mix1.au
+$BINDIR/mix $SOUNDDIR/temp1.au $SOUNDDIR/temp2.au \
+   $SOUNDDIR/mix1.au >/dev/null <<EOT
+0.6
+0.2
+0
+EOT
+
+
+rm -f $SOUNDDIR/temp1.au
+rm -f $SOUNDDIR/temp2.au

@@ -1,0 +1,4 @@
+sigFile      -- programs that deal with creating/processing soundfiles.
+sigControl   -- programs that deal with real-time interactive sound.
+sigAudio     -- programs that deal with real-time non-interactive sound.
+sigMisc      -- programs that don't fit anywhere else.

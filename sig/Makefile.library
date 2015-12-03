@@ -1,0 +1,598 @@
+## sig++ library GNU makefile for linux.
+##
+## Programmer:    Craig Stuart Sapp <craig@ccrma.stanford.edu>
+## Creation Date: Thu May  8 21:57:29 PDT 1997
+## Last Modified: Sun Apr 19 18:50:15 PDT 1998
+## Last Modified: Sun Jan 10 06:04:18 PST 1999
+## Last Modified: Fri May 28 15:21:22 PDT 1999
+## Last Modified: Sun Jun 11 13:38:02 PDT 2000
+## Filename:      ...sig/make/linux/Makefile.library
+##
+## Description: This Makefile creates the sig++ library lib/libsig.a
+##              for linux, using gcc 2.7.2.1 or higher
+##
+## To run this makefile, type (without quotes) "make -f Makefile.library"
+##
+
+###########################################################################
+#                                                                         #
+#                                                                         #
+#  Operating System OSTYPEs available in the sig++ library compilation:   #
+#
+#      HPUX   = Hewlett-Packard Unix Workstations.
+#      IRIX   = SGI computers with IRIX OS.
+#      LINUX  = Linux running on intel computers
+#      NEXTI  = NeXT OS on Intel Hardware
+#      NEXTM  = NeXT OS on Motorola Hardware
+#      SUN    = Sun SPARCstations
+#      VISUAL = Windows 95/NT using Microsoft Visual C++ 5.0
+#
+# The file "sigConfiguration.h" in the include directory contains additional
+# defines which will be activated by the OS given by the OSTYPE variable 
+# below.  Look at the sigConfiguration.h file for various things which need 
+# to be defined specifically for each OS.  Only one of these defines
+# can be defined at a time.
+#
+OSTYPE = LINUX
+
+
+# The SUBTYPE define is used for accessing various I/O features.  
+# Currently, this is only used with LINUX.  More than 1 subtype 
+# can be defined at a time.  The possible values for SUBTYPEs are:
+#   OSS  -- Open Sound System interface to soundcards.
+#   ALSA -- Advanced Linux Sound Architecture interface to soundcards.
+#
+SUBTYPE = OSS
+
+
+OBJDIR    = obj
+SRCDIR    = src/sig
+INCDIR    = include/sig
+LIBDIR    = lib
+LIBFILE   = libsig.a
+
+COMPILER = g++
+
+DEFINES   = $(addprefix -D,$(OSTYPE)) $(addprefix -D,$(SUBTYPE)) 
+FLAGS     = -Wall -c -g -O3 $(DEFINES) -I$(INCDIR)
+
+#                                                                         #
+# End of user-modifiable variables.                                       #
+#                                                                         #
+###########################################################################
+
+
+# setting up the directory paths to search for dependency files
+vpath %.h   $(INCDIR):$(SRCDIR)
+vpath %.cpp $(SRCDIR):$(INCDIR)
+vpath %.o   $(OBJDIR)
+
+# generating a list of the object files
+OBJS = $(notdir $(patsubst %.cpp,%.o,$(wildcard $(SRCDIR)/*.cpp)))
+
+# defining an explicit rule for object file dependencies
+%.o : %.cpp 
+	$(COMPILER) $(FLAGS) -o $(OBJDIR)/$(notdir $@) $<
+
+# targets which don't actually refer to files
+.PHONY : all next4i next3i next3m sun hpux linux irix clean makeobjdir makelibdir
+
+
+###########################################################################
+#                                                                         #
+# Hardware Configurations:                                                #
+#                                                                         #
+
+all: makeobjdir makelibdir $(OBJS)
+
+ifeq ($(OSTYPE),LINUX)
+	@echo Making sig library file for linux ...
+	-rm -f $(LIBDIR)/$(LIBFILE)
+	ar r $(LIBDIR)/$(LIBFILE) $(OBJDIR)/*.o $(INCDIR)/version
+	ranlib $(LIBDIR)/$(LIBFILE)
+endif
+
+ifeq ($(OSTYPE),NEXTI)
+	@echo Making sig library file for NextStep with Intel CPUs ...
+	-rm -f $(LIBDIR)/$(LIBFILE)
+	libtool -o $(LIBDIR)/$(LIBFILE) $(OBJDIR)/*.o 
+endif
+
+ifeq ($(OSTYPE),NEXTM)
+	@echo Making sig library file for NextStep with Motorola CPUs ...
+	-rm -f $(LIBDIR)/$(LIBFILE)
+	libtool -o $(LIBDIR)/$(LIBFILE) $(OBJDIR)/*.o 
+endif
+
+ifeq ($(OSTYPE),SUN)
+	@echo Making sig library file for SunOS ...
+	-rm -f $(LIBDIR)/$(LIBFILE)
+	ar r $(LIBDIR)/$(LIBFILE) $(OBJDIR)/*.o $(INCDIR)/version
+endif
+
+ifeq ($(OSTYPE),HPUX)
+	@echo Making sig library file for HPUX ...
+	-rm -f $(LIBDIR)/$(LIBFILE)
+	ar r $(LIBDIR)/$(LIBFILE) $(OBJDIR)/*.o $(INCDIR)/version
+	ranlib $(LIBDIR)/$(LIBFILE)
+endif
+
+ifeq ($(OSTYPE),IRIX)
+	@echo Making sig library file for IRIX ...
+	-rm -f $(LIBDIR)/$(LIBFILE)
+	ar r $(LIBDIR)/$(LIBFILE) $(OBJDIR)/*.o $(INCDIR)/version
+endif
+
+
+makelibdir:
+	@echo Making $(OBJDIR) to store intermediate object files
+	-mkdir $(OBJDIR)
+
+makeobjdir:
+	@echo Making $(LIBDIR) if it does not exist
+	-mkdir $(LIBDIR)
+
+clean:
+	@echo Deleting $(OBJDIR) and all files that are contained inside.
+	-rm -f $(OBJDIR)/*.o
+	-rmdir $(OBJDIR)
+
+
+#                                                                         #
+###########################################################################
+
+
+
+###########################################################################
+#
+# Dependencies -- generated with the following command in
+#      the src directory
+#
+# In csh shells:
+#
+#   (foreach i (*.cpp)
+#      cc -I../../include/sig -MM $i | \
+#         sed 's/\.\.\/\.\.\/include\/sig\///g' |
+#         sed 's/^ //; s/\\$//'
+#      echo ""
+#   end) | fmt
+# 
+# In bash shells:
+#
+#   (for i in *.cpp
+#   do
+#      cc -I../../include/sig -MM $i | \
+#         sed 's/\.\.\/\.\.\/include\/sig\///g' |
+#         sed 's/^ //; s/\\$//'
+#      echo ""
+#   done) | fmt
+#
+ 
+Action.o: Action.cpp Action.h Signal.h sigTypes.h sigDefines.h \
+Collection.h Collection.cpp Filter.h Generator.h Input.h Array.h Array.cpp
+
+Add.o: Add.cpp Add.h Filter.h Generator.h Signal.h sigTypes.h sigDefines.h \
+Input.h Collection.h Collection.cpp Array.h Array.cpp
+
+Allpass.o: Allpass.cpp Allpass.h Filter.h Generator.h Signal.h sigTypes.h \
+sigDefines.h Input.h Collection.h Collection.cpp Array.h Array.cpp Delay.h
+
+Allpass1.o: Allpass1.cpp Allpass1.h Filter.h Generator.h Signal.h \
+sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp Array.h \
+Array.cpp
+
+Array.o: Array.cpp Array.h Collection.h Collection.cpp Array.cpp
+
+BitFileIn.o: BitFileIn.cpp BitFileIn.h
+
+BitFileOut.o: BitFileOut.cpp BitFileOut.h
+
+Block.o: Block.cpp Block.h
+
+ChordNet.o: ChordNet.cpp ChordNet.h Matrix.h Matrix.cpp
+
+ChordQuality.o: ChordQuality.cpp ChordQuality.h \
+Collection.h Collection.cpp Convert.h HumdrumEnumerations.h \
+EnumerationChordQualityInversion.h Enumeration.h EnumerationData.h \
+Enum_basic.h Enum_chordQuality.h EnumerationChordQualityRoot.h \
+EnumerationChordQualityType.h EnumerationExclusiveInterpretation.h \
+Enum_exclusiveInterpretation.h EnumerationInterval.h Enum_base40.h \
+EnumerationMusePitchClass.h Enum_musepitch.h Enum_humdrumRecord.h \
+Enum_mode.h
+
+CircularBuffer.o: CircularBuffer.cpp CircularBuffer.h CircularBuffer.cpp
+
+Collection.o: Collection.cpp Collection.h Collection.cpp
+
+Comb.o: Comb.cpp Comb.h Filter.h Generator.h Signal.h sigTypes.h \
+sigDefines.h Input.h Collection.h Collection.cpp Array.h Array.cpp Delay.h
+
+ComplexD.o: ComplexD.cpp ComplexD.h
+
+Constant.o: Constant.cpp Constant.h Generator.h Signal.h sigTypes.h \
+sigDefines.h
+
+Convert.o: Convert.cpp Convert.h HumdrumEnumerations.h \
+EnumerationChordQualityInversion.h Enumeration.h EnumerationData.h \
+Enum_basic.h Collection.h Collection.cpp Enum_chordQuality.h \
+EnumerationChordQualityRoot.h EnumerationChordQualityType.h \
+EnumerationExclusiveInterpretation.h Enum_exclusiveInterpretation.h \
+EnumerationInterval.h Enum_base40.h EnumerationMusePitchClass.h \
+Enum_musepitch.h Enum_humdrumRecord.h Enum_mode.h ChordQuality.h
+
+DCBlock.o: DCBlock.cpp DCBlock.h Filter.h Generator.h Signal.h sigTypes.h \
+sigDefines.h Input.h Collection.h Collection.cpp Array.h Array.cpp
+
+Delay.o: Delay.cpp Delay.h sigTypes.h
+
+Delayline.o: Delayline.cpp Delayline.h Delay.h sigTypes.h Filter.h \
+Generator.h Signal.h sigDefines.h Input.h Collection.h Collection.cpp \
+Array.h Array.cpp
+
+Distribution.o: Distribution.cpp Distribution.h
+
+Downsample.o: Downsample.cpp Downsample.h Filter.h Generator.h Signal.h \
+sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp Array.h \
+Array.cpp
+
+Empty.o: Empty.cpp Empty.h Filter.h Generator.h Signal.h sigTypes.h \
+sigDefines.h Input.h Collection.h Collection.cpp Array.h Array.cpp \
+
+Enumeration.o: Enumeration.cpp Enumeration.h EnumerationData.h \
+Enum_basic.h Collection.h Collection.cpp function_information.h
+
+EnumerationData.o: EnumerationData.cpp EnumerationData.h Enum_basic.h \
+function_information.h
+
+Envelope.o: Envelope.cpp Envelope.h Generator.h Signal.h sigTypes.h \
+sigDefines.h EnvelopeString.h Array.h Collection.h Collection.cpp \
+Array.cpp
+
+EnvelopeString.o: EnvelopeString.cpp EnvelopeString.h Array.h Collection.h \
+Collection.cpp Array.cpp
+
+Event.o: Event.cpp Event.h sigTypes.h OneStageEvent.h MidiEvent.h \
+TwoStageEvent.h NoteEvent.h MultiStageEvent.h FunctionEvent.h \
+EventBuffer.h CircularBuffer.h CircularBuffer.cpp MidiOutput.h \
+MidiOutPort.h MidiOutPort_unsupported.h FileIO.h SigTimer.h Array.h \
+Collection.h Collection.cpp Array.cpp
+
+EventBuffer.o: EventBuffer.cpp EventBuffer.h Event.h sigTypes.h \
+OneStageEvent.h MidiEvent.h TwoStageEvent.h NoteEvent.h MultiStageEvent.h \
+FunctionEvent.h CircularBuffer.h CircularBuffer.cpp MidiOutput.h \
+MidiOutPort.h MidiOutPort_unsupported.h FileIO.h SigTimer.h Array.h \
+Collection.h Collection.cpp Array.cpp
+
+FileIO.o: FileIO.cpp FileIO.h sigConfiguration.h
+
+Filter.o: Filter.cpp Filter.h Generator.h Signal.h sigTypes.h sigDefines.h \
+Input.h Collection.h Collection.cpp Array.h Array.cpp
+
+FixedSine.o: FixedSine.cpp FixedSine.h Generator.h Signal.h sigTypes.h \
+sigDefines.h
+
+Function.o: Function.cpp Function.h Generator.h Signal.h sigTypes.h \
+sigDefines.h
+
+FunctionEvent.o: FunctionEvent.cpp FunctionEvent.h TwoStageEvent.h \
+Event.h sigTypes.h OneStageEvent.h MidiEvent.h MultiStageEvent.h \
+EventBuffer.h CircularBuffer.h CircularBuffer.cpp MidiOutput.h \
+MidiOutPort.h MidiOutPort_unsupported.h FileIO.h SigTimer.h Array.h \
+Collection.h Collection.cpp Array.cpp NoteEvent.h
+
+Generator.o: Generator.cpp Generator.h Signal.h sigTypes.h sigDefines.h
+
+History.o: History.cpp History.h History.cpp
+
+HumdrumFile.o: HumdrumFile.cpp HumdrumFile.h HumdrumRecord.h \
+Collection.h Collection.cpp Enum_exclusiveInterpretation.h \
+Enum_basic.h Enum_humdrumRecord.h Convert.h HumdrumEnumerations.h \
+EnumerationChordQualityInversion.h Enumeration.h \
+EnumerationData.h Enum_chordQuality.h EnumerationChordQualityRoot.h \
+EnumerationChordQualityType.h EnumerationExclusiveInterpretation.h \
+EnumerationInterval.h Enum_base40.h EnumerationMusePitchClass.h \
+Enum_musepitch.h Enum_mode.h ChordQuality.h
+
+HumdrumRecord.o: HumdrumRecord.cpp HumdrumRecord.h Collection.h \
+Collection.cpp Enum_exclusiveInterpretation.h Enum_basic.h \
+Enum_humdrumRecord.h Convert.h HumdrumEnumerations.h \
+EnumerationChordQualityInversion.h Enumeration.h \
+EnumerationData.h Enum_chordQuality.h EnumerationChordQualityRoot.h \
+EnumerationChordQualityType.h EnumerationExclusiveInterpretation.h \
+EnumerationInterval.h Enum_base40.h EnumerationMusePitchClass.h \
+Enum_musepitch.h Enum_mode.h ChordQuality.h
+
+Identify.o: Identify.cpp Identify.h
+
+Idler.o: Idler.cpp Idler.h SigTimer.h
+
+Impulse.o: Impulse.cpp Impulse.h Generator.h Signal.h sigTypes.h \
+sigDefines.h
+
+Input.o: Input.cpp Input.h Collection.h Collection.cpp Array.h Array.cpp \
+Signal.h sigTypes.h sigDefines.h
+
+KeyboardInput_unix.o: KeyboardInput_unix.cpp KeyboardInput_unix.h
+
+KeyboardInput_visual.o: KeyboardInput_visual.cpp
+
+LineDisplay.o: LineDisplay.cpp LineDisplay.h
+
+LinuxSoundOut.o: LinuxSoundOut.cpp LinuxSoundOut.h Filter.h Generator.h \
+Signal.h sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp \
+Array.h Array.cpp RTSoundIO.h Object.h helperFunctions.h
+
+LogisticLimiter.o: LogisticLimiter.cpp LogisticLimiter.h Filter.h \
+Generator.h Signal.h sigTypes.h sigDefines.h Input.h Collection.h \
+Collection.cpp Array.h Array.cpp
+
+LookupTable.o: LookupTable.cpp LookupTable.h LookupTableCI.h sigTypes.h
+
+LookupTableCI.o: LookupTableCI.cpp LookupTableCI.h sigTypes.h
+
+LookupTableLI.o: LookupTableLI.cpp LookupTableLI.h LookupTableCI.h \
+sigTypes.h
+
+Matrix.o: Matrix.cpp Matrix.h Matrix.cpp
+
+MidiEvent.o: MidiEvent.cpp MidiEvent.h OneStageEvent.h Event.h sigTypes.h \
+TwoStageEvent.h NoteEvent.h MultiStageEvent.h FunctionEvent.h \
+EventBuffer.h CircularBuffer.h CircularBuffer.cpp MidiOutput.h \
+MidiOutPort.h MidiOutPort_unsupported.h FileIO.h SigTimer.h Array.h \
+Collection.h Collection.cpp Array.cpp
+
+MidiFile.o: MidiFile.cpp MidiFile.h FileIO.h Array.h Collection.h \
+Collection.cpp Array.cpp
+
+MidiFile2.o: MidiFile2.cpp MidiFile2.h MidiMessage.h sigTypes.h
+
+MidiFileWrite.o: MidiFileWrite.cpp MidiFileWrite.h FileIO.h SigTimer.h
+
+MidiIO.o: MidiIO.cpp MidiIO.h MidiInput.h MidiInPort.h MidiMessage.h \
+sigTypes.h MidiInPort_unsupported.h CircularBuffer.h CircularBuffer.cpp \
+Array.h Collection.h Collection.cpp Array.cpp MidiOutput.h MidiOutPort.h \
+MidiOutPort_unsupported.h FileIO.h SigTimer.h
+
+MidiInPort_alsa.o: MidiInPort_alsa.cpp
+
+MidiInPort_linux.o: MidiInPort_linux.cpp MidiInPort_linux.h \
+MidiInPort_oss.h MidiInPort_alsa.h MidiInPort_unsupported.h MidiMessage.h \
+sigTypes.h CircularBuffer.h CircularBuffer.cpp Array.h Collection.h \
+Collection.cpp Array.cpp
+
+MidiInPort_oss.o: MidiInPort_oss.cpp
+
+MidiInPort_unsupported.o: MidiInPort_unsupported.cpp \
+MidiInPort_unsupported.h MidiMessage.h sigTypes.h CircularBuffer.h \
+CircularBuffer.cpp Array.h Collection.h Collection.cpp Array.cpp
+
+MidiInPort_visual.o: MidiInPort_visual.cpp
+
+MidiInput.o: MidiInput.cpp MidiInput.h MidiInPort.h MidiMessage.h \
+sigTypes.h MidiInPort_unsupported.h CircularBuffer.h CircularBuffer.cpp \
+Array.h Collection.h Collection.cpp Array.cpp
+
+MidiMessage.o: MidiMessage.cpp MidiMessage.h sigTypes.h
+
+MidiOutPort_alsa.o: MidiOutPort_alsa.cpp
+
+MidiOutPort_linux.o: MidiOutPort_linux.cpp MidiOutPort_linux.h \
+MidiOutPort_oss.h MidiOutPort_alsa.h MidiOutPort_unsupported.h sigTypes.h
+
+MidiOutPort_oss.o: MidiOutPort_oss.cpp
+
+MidiOutPort_unsupported.o: MidiOutPort_unsupported.cpp \
+MidiOutPort_unsupported.h sigTypes.h
+
+MidiOutPort_visual.o: MidiOutPort_visual.cpp
+
+MidiOutput.o: MidiOutput.cpp MidiOutput.h MidiOutPort.h \
+MidiOutPort_unsupported.h sigTypes.h FileIO.h SigTimer.h Array.h \
+Collection.h Collection.cpp Array.cpp
+
+MidiPerform.o: MidiPerform.cpp MidiPerform.h MidiFile.h FileIO.h Array.h \
+Collection.h Collection.cpp Array.cpp CircularBuffer.h CircularBuffer.cpp \
+SigTimer.h MidiOutput.h MidiOutPort.h MidiOutPort_unsupported.h sigTypes.h
+
+MidiPort.o: MidiPort.cpp MidiPort.h MidiInPort.h MidiMessage.h \
+sigTypes.h MidiInPort_unsupported.h CircularBuffer.h CircularBuffer.cpp \
+Array.h Collection.h Collection.cpp Array.cpp MidiOutPort.h \
+MidiOutPort_unsupported.h
+
+MultiStageEvent.o: MultiStageEvent.cpp MultiStageEvent.h Event.h \
+sigTypes.h OneStageEvent.h MidiEvent.h TwoStageEvent.h NoteEvent.h \
+EventBuffer.h CircularBuffer.h CircularBuffer.cpp MidiOutput.h \
+MidiOutPort.h MidiOutPort_unsupported.h FileIO.h SigTimer.h Array.h \
+Collection.h Collection.cpp Array.cpp FunctionEvent.h
+
+Multiply.o: Multiply.cpp Multiply.h Filter.h Generator.h Signal.h \
+sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp Array.h \
+Array.cpp
+
+MuseRecord.o: MuseRecord.cpp MuseRecord.h MuseRecordBasic.h \
+Collection.h Collection.cpp Enum_muserec.h Enum_basic.h Convert.h \
+HumdrumEnumerations.h EnumerationChordQualityInversion.h Enumeration.h \
+EnumerationData.h Enum_chordQuality.h EnumerationChordQualityRoot.h \
+EnumerationChordQualityType.h EnumerationExclusiveInterpretation.h \
+Enum_exclusiveInterpretation.h EnumerationInterval.h Enum_base40.h \
+EnumerationMusePitchClass.h Enum_musepitch.h Enum_humdrumRecord.h \
+Enum_mode.h ChordQuality.h function_information.h
+
+MuseRecordBasic.o: MuseRecordBasic.cpp MuseRecordBasic.h Collection.h \
+Collection.cpp Enum_muserec.h Enum_basic.h
+
+NetBase.o: NetBase.cpp NetBase.h Matrix.h Matrix.cpp
+
+Nidaq.o: Nidaq.cpp
+
+NoteEvent.o: NoteEvent.cpp NoteEvent.h TwoStageEvent.h Event.h sigTypes.h \
+OneStageEvent.h MidiEvent.h MultiStageEvent.h FunctionEvent.h \
+EventBuffer.h CircularBuffer.h CircularBuffer.cpp MidiOutput.h \
+MidiOutPort.h MidiOutPort_unsupported.h FileIO.h SigTimer.h Array.h \
+Collection.h Collection.cpp Array.cpp
+
+Object.o: Object.cpp Object.h
+
+OnePole.o: OnePole.cpp OnePole.h Filter.h Generator.h Signal.h sigTypes.h \
+sigDefines.h Input.h Collection.h Collection.cpp Array.h Array.cpp
+
+OneStageEvent.o: OneStageEvent.cpp OneStageEvent.h Event.h sigTypes.h \
+TwoStageEvent.h NoteEvent.h MultiStageEvent.h FunctionEvent.h \
+EventBuffer.h CircularBuffer.h CircularBuffer.cpp MidiOutput.h \
+MidiOutPort.h MidiOutPort_unsupported.h FileIO.h SigTimer.h Array.h \
+Collection.h Collection.cpp Array.cpp MidiEvent.h
+
+Options.o: Options.cpp Options.h Array.h Collection.h Collection.cpp \
+Array.cpp Options_private.h
+
+Options_private.o: Options_private.cpp Options_private.h
+
+Osc.o: Osc.cpp Osc.h Filter.h Generator.h Signal.h sigTypes.h sigDefines.h \
+Input.h Collection.h Collection.cpp Array.h Array.cpp PeriodTable.h \
+LookupTable.h LookupTableCI.h
+
+Pan.o: Pan.cpp Pan.h Filter.h Generator.h Signal.h sigTypes.h sigDefines.h \
+Input.h Collection.h Collection.cpp Array.h Array.cpp
+
+Pan2.o: Pan2.cpp Pan2.h Filter.h Generator.h Signal.h sigTypes.h \
+sigDefines.h Input.h Collection.h Collection.cpp Array.h Array.cpp Delay.h
+
+PerformData.o: PerformData.cpp PerformData.h PerformDataRecord.h Array.h \
+Collection.h Collection.cpp Array.cpp
+
+PerformDataRecord.o: PerformDataRecord.cpp PerformDataRecord.h Array.h \
+Collection.h Collection.cpp Array.cpp
+
+Performance.o: Performance.cpp Performance.h PerformData.h \
+PerformDataRecord.h Array.h Collection.h Collection.cpp Array.cpp \
+MidiOutput.h MidiOutPort.h MidiOutPort_unsupported.h sigTypes.h FileIO.h \
+SigTimer.h
+
+PeriodTable.o: PeriodTable.cpp PeriodTable.h LookupTable.h LookupTableCI.h \
+sigTypes.h sigDefines.h
+
+RTSoundIO.o: RTSoundIO.cpp RTSoundIO.h Object.h
+
+RadioBaton.o: RadioBaton.cpp RadioBaton.h batonprotocol.h CircularBuffer.h \
+CircularBuffer.cpp MidiMessage.h sigTypes.h MidiIO.h MidiInput.h \
+MidiInPort.h MidiInPort_unsupported.h Array.h Collection.h Collection.cpp \
+Array.cpp MidiOutput.h MidiOutPort.h MidiOutPort_unsupported.h FileIO.h \
+SigTimer.h
+
+RandomDist.o: RandomDist.cpp RandomDist.h Filter.h Generator.h Signal.h \
+sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp Array.h \
+Array.cpp Distribution.h
+
+Resonator.o: Resonator.cpp Resonator.h Filter.h Generator.h Signal.h \
+sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp Array.h \
+Array.cpp Delay.h
+
+ResoundOut.o: ResoundOut.cpp ResoundOut.h Filter.h Generator.h Signal.h \
+sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp Array.h \
+Array.cpp SoundHeader.h FileIO.h helperFunctions.h
+
+Reverb.o: Reverb.cpp Reverb.h Filter.h Generator.h Signal.h sigTypes.h \
+sigDefines.h Input.h Collection.h Collection.cpp Array.h Array.cpp
+
+ReverbA.o: ReverbA.cpp ReverbA.h Reverb.h Filter.h Generator.h Signal.h \
+sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp Array.h \
+Array.cpp Comb.h Delay.h Allpass.h Add.h Constant.h Action.h
+
+Reverberator.o: Reverberator.cpp Reverberator.h Filter.h Generator.h \
+Signal.h sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp \
+Array.h Array.cpp Add.h Multiply.h Constant.h ReverbA.h Reverb.h Comb.h \
+Delay.h Allpass.h Action.h
+
+Scale.o: Scale.cpp Scale.h Filter.h Generator.h Signal.h sigTypes.h \
+sigDefines.h Input.h Collection.h Collection.cpp Array.h Array.cpp
+
+Selector.o: Selector.cpp Selector.h Filter.h Generator.h Signal.h \
+sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp Array.h \
+Array.cpp
+
+Sequencer_alsa.o: Sequencer_alsa.cpp
+
+Sequencer_oss.o: Sequencer_oss.cpp
+
+SigTimer.o: SigTimer.cpp SigTimer.h
+
+Sign.o: Sign.cpp Sign.h Filter.h Generator.h Signal.h sigTypes.h \
+sigDefines.h Input.h Collection.h Collection.cpp Array.h Array.cpp
+
+Signal.o: Signal.cpp Signal.h sigTypes.h sigDefines.h
+
+Smoother.o: Smoother.cpp Smoother.h Filter.h Generator.h Signal.h \
+sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp Array.h \
+Array.cpp
+
+SoundFileIn.o: SoundFileIn.cpp SoundFileIn.h Generator.h Signal.h \
+sigTypes.h sigDefines.h SoundHeader.h FileIO.h helperFunctions.h Array.h \
+Collection.h Collection.cpp Array.cpp
+
+SoundFileInMemory.o: SoundFileInMemory.cpp SoundFileInMemory.h Generator.h \
+Signal.h sigTypes.h sigDefines.h SoundHeader.h FileIO.h helperFunctions.h \
+Array.h Collection.h Collection.cpp Array.cpp
+
+SoundFileOut.o: SoundFileOut.cpp SoundFileOut.h Filter.h Generator.h \
+Signal.h sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp \
+Array.h Array.cpp SoundHeader.h FileIO.h helperFunctions.h
+
+SoundHeader.o: SoundHeader.cpp SoundHeader.h FileIO.h
+
+SoundLoop.o: SoundLoop.cpp SoundLoop.h SoundFileInMemory.h Generator.h \
+Signal.h sigTypes.h sigDefines.h SoundHeader.h FileIO.h helperFunctions.h \
+Array.h Collection.h Collection.cpp Array.cpp
+
+Switch.o: Switch.cpp Switch.h Filter.h Generator.h Signal.h sigTypes.h \
+sigDefines.h Input.h Collection.h Collection.cpp Array.h Array.cpp
+
+Synthesizer.o: Synthesizer.cpp Synthesizer.h MidiIO.h MidiInput.h \
+MidiInPort.h MidiMessage.h sigTypes.h MidiInPort_unsupported.h \
+CircularBuffer.h CircularBuffer.cpp Array.h Collection.h Collection.cpp \
+Array.cpp MidiOutput.h MidiOutPort.h MidiOutPort_unsupported.h FileIO.h \
+SigTimer.h
+
+TwoStageEvent.o: TwoStageEvent.cpp TwoStageEvent.h Event.h sigTypes.h \
+OneStageEvent.h MidiEvent.h MultiStageEvent.h FunctionEvent.h \
+EventBuffer.h CircularBuffer.h CircularBuffer.cpp MidiOutput.h \
+MidiOutPort.h MidiOutPort_unsupported.h FileIO.h SigTimer.h Array.h \
+Collection.h Collection.cpp Array.cpp NoteEvent.h
+
+UnitDelay.o: UnitDelay.cpp UnitDelay.h Filter.h Generator.h Signal.h \
+sigTypes.h sigDefines.h Input.h Collection.h Collection.cpp Array.h \
+Array.cpp
+
+UserIn.o: UserIn.cpp UserIn.h Generator.h Signal.h sigTypes.h sigDefines.h
+
+UserOut.o: UserOut.cpp UserOut.h Filter.h Generator.h Signal.h sigTypes.h \
+sigDefines.h Input.h Collection.h Collection.cpp Array.h Array.cpp
+
+Vector.o: Vector.cpp Vector.h ComplexD.h Vector.cpp
+
+Voice.o: Voice.cpp Voice.h MidiOutput.h MidiOutPort.h \
+MidiOutPort_unsupported.h sigTypes.h FileIO.h SigTimer.h Array.h \
+Collection.h Collection.cpp Array.cpp
+
+WhiteNoise.o: WhiteNoise.cpp WhiteNoise.h Generator.h Signal.h sigTypes.h \
+sigDefines.h
+
+helperFunctions.o: helperFunctions.cpp helperFunctions.h Signal.h \
+sigTypes.h sigDefines.h
+
+improv.o: improv.cpp improv.h mididefines.h midichannels.h notenames.h \
+gminstruments.h sigControl.h SigTimer.h Idler.h MidiMessage.h sigTypes.h \
+MidiOutPort_visual.h MidiOutPort_unsupported.h MidiOutPort.h MidiOutput.h \
+FileIO.h Array.h Collection.h Collection.cpp Array.cpp MidiInPort_visual.h \
+MidiInPort_unsupported.h CircularBuffer.h CircularBuffer.cpp MidiInPort.h \
+MidiInput.h MidiPort.h MidiIO.h RadioBaton.h batonprotocol.h Synthesizer.h \
+Voice.h KeyboardInput.h KeyboardInput_unix.h MidiPerform.h MidiFile.h \
+EventBuffer.h Event.h OneStageEvent.h MidiEvent.h TwoStageEvent.h \
+NoteEvent.h MultiStageEvent.h FunctionEvent.h Options.h
+
+quantization.o: quantization.cpp quantization.h
+
+transforms.o: transforms.cpp transforms.h Block.h ComplexD.h \
+transforms-private.h
+
+window.o: window.cpp
+

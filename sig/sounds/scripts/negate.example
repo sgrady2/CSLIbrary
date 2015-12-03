@@ -1,0 +1,54 @@
+#!/bin/csh
+#
+# Examples for negate
+#
+# parameters are: (1) input sound file name
+#                 (2) output sound file name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+#####
+#
+# Example 1 
+#
+
+
+# 3 periods of a 500 Hz tone:
+rm -f $SOUNDDIR/temp1.au
+$BINDIR/periods $SOUNDDIR/temp1.au >/dev/null <<EOT
+500
+3
+0.7
+EOT
+
+# 3 periods of a 500 Hz tone inverted:
+rm -f $SOUNDDIR/temp2.au
+$BINDIR/negate $SOUNDDIR/temp1.au $SOUNDDIR/temp2.au >/dev/null 
+
+
+echo Creating $SOUNDDIR/negate1.au
+
+rm -f $SOUNDDIR/negate1.au
+$BINDIR/concatenate $SOUNDDIR/temp1.au $SOUNDDIR/temp2.au  \
+   $SOUNDDIR/negate1.au >/dev/null <<EOT
+0
+EOT
+   
+
+
+rm -f $SOUNDDIR/temp1.au
+rm -f $SOUNDDIR/temp2.au
+
+

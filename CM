@@ -1,0 +1,24 @@
+FOR OPENGL:
+g++ -o app app.cpp -lglut -lGLU -lGL
+
+FOR GTK3 on linux:
+
+gcc hello.c $(pkg-config --cflags --libs gtk+-3.0) -o hello
+
+FOR regular C:
+gcc hello.c -o hello
+
+For C++:
+g++ hello.cpp -o hello
+
+for java:
+javac -g Foo.java
+The g is optional but it makes debugging easier
+
+for python:
+no way to compile:
+to run programs simply type python main.py sysargv[1] ect..
+
+for ruby:
+
+

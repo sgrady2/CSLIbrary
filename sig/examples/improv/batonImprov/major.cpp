@@ -1,0 +1,1 @@
+../../all/major.cpp

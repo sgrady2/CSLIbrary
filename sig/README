@@ -1,0 +1,96 @@
+Sig++: Music Signal Processing in C++
+Craig Stuart Sapp <craig@ccrma.stanford.edu>
+
+README for sig 1.0.1.
+
+The latest version of sig is avaliable at:
+   http://www-ccrma.stanford.edu/~craig/sig, and
+   http://sig.sapp.org
+
+This version of sig was created Sun Jun 11 14:45:56 PDT 2000
+
+=============================================================================
+
+INTRODUCTION
+
+Sig++ is a collection of C++ classes and example programs which
+demonstrate the use of these classes.  Sig++ is primarily intended
+for generating/processing audio signals with soundfile input/output
+to the example programs.  The primary example programs are called the
+"sigFile" set.  Other example programs show how to communicate with MIDI
+instruments (the improv example set) and how to read/write/process musical
+scores (the museinfo example set), which may be useful in controlling the
+audio components of sig++.
+
+After you have created the example programs, try these commands 
+to get started:
+
+Create 10 seconds of whitenoise with an amplitude of 0.5:
+   bin/whitenoise -d 10 -a 0.5 whitenoise.wav
+
+Resonate the whitenoise with time-varying envelopes:
+   bin/resonate  -f "0 100 1 2000 3 500" -b "0 100 1 10 2 1000" whitenoise.wav resonated.wav
+
+
+=============================================================================
+
+Here are the basic steps to make the sig++ library/example programs.
+Type the following in order:
+
+   make library
+   make example
+   make sound
+
+If you only want the soundfile example programs, you could instead
+type:
+
+   make library
+   make sigfile
+   make sound
+
+By default, the Makefiles are configured for Linux with Intel CPU's
+using the Open Sound System interface for accessing soundcards.
+Edit the makefiles if you have a different configuration.
+
+=============================================================================
+
+Description of various files/directories in the sig directory tree:
+
+src         -- Directory which contains the source code for making the
+               sig library file.  
+include     -- Directory containing header files for use when compiling
+               programs using the sig library.
+examples    -- Directory of source code for example programs which use the 
+               sig library.
+COPYRIGHT   -- The copyright notice.
+README      -- This file.
+VERSION     -- A file which lists what version of sig++ should be in in 
+               this directory.
+bin         -- Directory for binaries created from compiling the example 
+               programs.
+obj         -- Temporary object files created before the library file.
+lib         -- Directory which contains (or will contain) the compiled library 
+               files for sig.
+sounds      -- Directory for storing example sounds.
+
+
+===========================================================================
+
+Online documentation is available at:
+   http://www-ccrma.stanford.edu/~craig/sig/doc
+or
+   http://sig.sapp.org/doc
+
+Also, downloadable documentation may be available from 
+   http://www-ccrma.stanford.edu/~craig/sig/download/files
+or
+   http://sig.sapp.org/download/files
+
+in the file:
+   sigdoc-1.0.1.tar.gz   
+
+which contains the HTML documentation for the sig library.
+
+
+
+

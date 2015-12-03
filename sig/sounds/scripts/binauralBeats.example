@@ -1,0 +1,37 @@
+#!/bin/csh
+#
+# Examples for binauralBeats
+#
+# parameters are: (1) frequency envelope for left channel  (in Hertz)
+#                 (2) frequency envelope for right channel (in Hertz)
+#                 (3) output soundfile
+# Program input   (a) length of output soundfile in seconds
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+#####
+#
+# Example: beats to 2 Hertz for 10 seconds
+#
+
+echo Creating $SOUNDDIR/binbeats.au 
+
+rm -f $SOUNDDIR/binbeats.au
+$BINDIR/binauralBeats "(0 150; 1 150)" "(0 150; 1 152; 2 152)" \
+   $SOUNDDIR/binbeats.au >/dev/null <<EOT
+10
+EOT
+
+

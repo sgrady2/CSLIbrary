@@ -1,0 +1,58 @@
+#!/bin/csh
+#
+# Examples for envelope 
+#
+# parameters are: (1) amplitude envelope string
+#                 (2) input soundfile
+#                 (3) output soundfile name
+#
+
+if ($1 == "") then
+   set SOUNDDIR = ../
+else
+   set SOUNDDIR = $1
+endif
+
+if ($2 == "") then
+   set BINDIR = ../../bin
+else
+   set BINDIR = $2
+endif
+
+
+rm -f $SOUNDDIR/temp.au
+$BINDIR/sinewave $SOUNDDIR/temp.au >/dev/null <<EOT
+1000
+1000
+0.9
+0.0
+EOT
+
+
+# now put a triangle amplitude envelope on the sound:
+
+echo Creating $SOUNDDIR/ampEnvelope1.au which has a triangle envelope
+
+rm -f $SOUNDDIR/ampEnvelope1.au
+$BINDIR/envelope "(0,0 ; 1,1; 2,0)" $SOUNDDIR/temp.au \
+   $SOUNDDIR/ampEnvelope1.au >/dev/null
+
+
+echo Creating $SOUNDDIR/ampEnvelope2.au which has a geometric envelope
+
+rm -f $SOUNDDIR/ampEnvelope2.au
+$BINDIR/envelope "g(0,0.0001 ; 1,1; 2,0.0001)" $SOUNDDIR/temp.au \
+   $SOUNDDIR/ampEnvelope2.au >/dev/null
+
+
+# now create a 1000 sample ramp up and down at beginning of soundfile
+# using stick point
+
+
+echo Creating $SOUNDDIR/ampEnvelope3.au which has a ramp envelope
+
+rm -f $SOUNDDIR/ampEnvelope3.au
+$BINDIR/envelope "(0,0 ; 1000,1; s; 2000,0)" $SOUNDDIR/temp.au \
+   $SOUNDDIR/ampEnvelope3.au >/dev/null
+
+
